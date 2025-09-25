@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QuickStop CodeLab — Portfolio</title>
+
+  <!--favicon-->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+<link rel="shortcut icon" href="favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+<link rel="manifest" href="favicon/site.webmanifest" />
+
+  <!-- model-viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="style.css" rel="stylesheet">
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ML2XKFY3XL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ML2XKFY3XL');
+</script>
+
+
+</head>
+<body>
+  <div class="page" role="main" aria-label="QuickStop CodeLab Portfolio">
+
+    <!-- Top-left brand (fixed) -->
+    <div class="brand" id="brandRoot" tabindex="0" aria-label="QuickStop CodeLab">
+      <div class="logo-symbol" id="logoSymbol" aria-hidden="true">
+        <img src="image/CodeLab logo.jpeg" alt="QuickStop Logo" class="brand-logo">
+      </div>
+      <div class="brand-text">
+        <div class="brand-main">
+          <span class="quickstop">QuickStop</span>
+          <span class="codelab">CodeLab</span>
+        </div>
+        <div class="tagline">Web &amp; App Made Simple.</div>
+      </div>
+    </div>
+
+    <!-- Top-right CTAs (fixed) -->
+    <div class="cta-group" role="group" aria-label="header actions">
+      <a href="projects.html" class="btn-cta" id="btnProjects">Projects</a>
+      <a href="enter-lab.html" class="btn-cta" id="btnEnter">Enter Lab</a>
+    </div>
+
+    <!-- ------------- MAIN CONTENT (must be INSIDE .page) ------------- -->
+    <div class="main-content">
+      <!-- HERO TEXT -->
+      <section id="hero-text" aria-hidden="false">
+        <h1 class="welcome-text">Welcome to <span class="accent">QuickStop CodeLab</span></h1>
+        <p class="tagline">Web &amp; App Made Simple.</p>
+      </section>
+
+      <!-- GLB SECTION -->
+      <section id="hero-glb" aria-hidden="false">
+        <model-viewer id="viewer"
+          src="models/character.glb"
+          alt="CodeLab character"
+          autoplay
+          animation-name="*"
+          shadow-intensity="1"
+          scale="0.30 0.30 0.30"
+          exposure="1"
+          camera-orbit="0deg 80deg auto"
+          field-of-view="20deg">
+        </model-viewer>
+
+<!-- Bottom right UI -->
+<div class="ui-bottom" aria-hidden="false">
+  <!-- This is now the terminal button -->
+  <div class="mini-card terminal-btn" id="btnTerminal" role="button" tabindex="0">
+    <div class="legend-dot" aria-hidden="true"></div>
+    <div>Interactive Lab • Click Terminal</div>
+  </div>
+  <button class="btn-cta" id="btnToggleMotion">Motion: ON</button>
+</div>
+
+<!-- Hidden Terminal Window -->
+<div id="terminalWindow" class="terminal hidden">
+  <div class="terminal-header">QS CodeLab Interactive Lab</div>
+  <div class="terminal-body">
+    <button class="cmd-btn" data-action="idle">Stand Idle</button>
+    <button class="cmd-btn" data-action="wave">Wave</button>
+    <button class="cmd-btn" data-action="jump">Jump</button>
+    <button class="cmd-btn" data-action="hang">Jump & Hang</button>
+    <button class="cmd-btn" data-action="leave">Leave</button>
+      <button class="cmd-btn" data-action="resume">Resume All</button>
+  </div>
+</div>
+
+
+    <!-- Loading overlay (keeps inside .page but fixed so it covers viewport) -->
+    <div class="loading" id="loading">
+      <div style="display:flex;gap:10px;align-items:center;">
+        <img src="image/CodeLab logo.jpeg" alt="QuickStop CodeLab Logo" class="loading-logo">
+        <div>QuickStop CodeLab — Loading…</div>
+      </div>
+      <div class="progress"><b id="prog" style="width:0%"></b></div>
+    </div>
+
+  </div>
+  
+  
+    <!-- Futuristic Footer -->
+ <footer class="holo-footer">
+  <div class="holo-bg"></div>
+  
+  <div class="holo-logo">
+    <img src="image/CodeLab logo.jpeg" alt="QuickStop CodeLab Logo">
+    <span class="glitch-text">QUICKSTOP CODELAB</span>
+  </div>
+
+  <nav class="holo-nav">
+    <a href="enter-lab.html">Labs</a>
+    <a href="projects.html">Projects</a>
+  </nav>
+   <!-- Credits -->
+  <div class="holo-credits">
+    <p class="glitch-small">Codelab Web v1.0</p>
+    <p class="glitch-small">© 2025 QuickStop CodeLabe — All Rights Reserved</p>
+  </div>
+</footer>
+  <!-- end .page -->
+
+  <!-- Loader + Motion script  -->
+  <script>
+    (function(){
+      const viewer = document.getElementById('viewer');
+      const loading = document.getElementById('loading');
+      const prog = document.getElementById('prog');
+      const motionBtn = document.getElementById('btnToggleMotion');
+
+      let fakeProgress = 0;
+      const fakeTimer = setInterval(() => {
+        fakeProgress = Math.min(95, fakeProgress + Math.random()*12);
+        prog.style.width = fakeProgress + '%';
+      }, 160);
+
+      viewer.addEventListener('load', () => {
+        clearInterval(fakeTimer);
+        prog.style.width = '100%';
+        setTimeout(() => {
+          loading.classList.add('hidden');
+          setTimeout(() => loading.style.display = 'none', 520);
+        }, 280);
+      });
+
+      setTimeout(() => {
+        if (!loading.classList.contains('hidden')) {
+          clearInterval(fakeTimer);
+          prog.style.width = '100%';
+          loading.classList.add('hidden');
+          setTimeout(() => loading.style.display = 'none', 520);
+        }
+      }, 8000);
+
+      // Motion toggle
+      let motionOn = true;
+      motionBtn.addEventListener('click', () => {
+        motionOn = !motionOn;
+        if (motionOn) {
+          viewer.animationName = '*';
+          viewer.play();
+          motionBtn.textContent = 'Motion: ON';
+          motionBtn.classList.add('active');
+        } else {
+          viewer.pause();
+          motionBtn.textContent = 'Motion: OFF';
+          motionBtn.classList.remove('active');
+        }
+      });
+    })();
+  </script>
+
+<!-- === INTERACTIVE TERMINAL JS START (with Motion fix) === -->
+<script>
+(function(){
+  const viewer = document.getElementById('viewer');
+  const terminalBtn = document.getElementById('btnTerminal');
+  const terminalWindow = document.getElementById('terminalWindow');
+  const cmdButtons = document.querySelectorAll('.cmd-btn');
+  const motionBtn = document.getElementById('btnToggleMotion'); // your Motion toggle button
+
+  let loopStart = null;
+  let loopEnd = null;
+  let looping = false;
+  let rafId = null;
+  let modelLoaded = false;
+  let activeBtn = null;
+  let motionEnabled = true; // 🔹 NEW: track motion state
+
+  // --- Action ranges (seconds) ---
+  const actions = {
+    idle: [0.0, 1.6],
+    wave: [2.0, 3.3],
+    jump: [3.6, 7.0],
+    hang: [7.0, 10.0],
+    leave: [12.1, 17.4],
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (terminalWindow) terminalWindow.classList.add("ready");
+  });
+
+  if (viewer) {
+    viewer.addEventListener('load', () => {
+      modelLoaded = true;
+      console.info('[Terminal] model-viewer loaded, animation ready');
+    });
+  }
+
+  // --- RAF watcher (with motion respect) ---
+  function rafTick() {
+    rafId = requestAnimationFrame(() => {
+      if (!looping || !motionEnabled) { 
+        rafId = null; 
+        return; 
+      }
+
+      const t = Number(viewer.currentTime || 0);
+      if (loopEnd !== null) {
+        if (t >= loopEnd) {
+          viewer.currentTime = loopStart;
+        } else if (t < loopStart) {
+          viewer.currentTime = loopStart;
+        }
+      }
+
+      viewer.play(); 
+      rafTick();
+    });
+  }
+
+  function startLoop(start, end, clickedBtn) {
+    if (typeof start !== 'number' || typeof end !== 'number' || end <= start) {
+      console.error('[Terminal] invalid loop range', start, end);
+      return;
+    }
+
+    loopStart = start;
+    loopEnd = end;
+    looping = true;
+
+    setActiveButton(clickedBtn);
+
+    if (!modelLoaded) {
+      console.warn('[Terminal] model not loaded yet — loop will start when possible');
+    }
+
+    viewer.currentTime = loopStart;
+    if (motionEnabled) viewer.play();
+
+    if (!rafId) rafTick();
+
+    console.info(`[Terminal] loop started ${start}s → ${end}s`);
+  }
+
+  function clearLoop() {
+    looping = false;
+    loopStart = null;
+    loopEnd = null;
+
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    setActiveButton(null);
+
+    if (motionEnabled) {
+      try {
+        viewer.animationName = '*';
+        viewer.play();
+      } catch (err) {
+        viewer.play();
+      }
+    }
+    console.info('[Terminal] resumed full animation playback');
+  }
+
+  function setActiveButton(btn) {
+    if (activeBtn) activeBtn.classList.remove('active');
+    activeBtn = btn || null;
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+
+  // --- UI wiring ---
+  if (terminalBtn) {
+    terminalBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      terminalWindow.classList.toggle('hidden');
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!terminalWindow) return;
+    if (!terminalWindow.classList.contains('hidden') &&
+        !terminalWindow.contains(e.target) &&
+        e.target !== terminalBtn) {
+      terminalWindow.classList.add('hidden');
+    }
+  });
+
+  if (terminalWindow) {
+    terminalWindow.addEventListener('click', (e) => e.stopPropagation());
+  }
+
+  cmdButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const action = btn.dataset.action;
+      if (!action) return;
+
+      if (action === 'exit') {
+        terminalWindow.classList.add('hidden');
+        return;
+      }
+      if (action === 'resume') {
+        clearLoop();
+        return;
+      }
+
+      const range = actions[action];
+      if (!range) {
+        console.warn('[Terminal] unknown action:', action);
+        return;
+      }
+
+      startLoop(range[0], range[1], btn);
+    });
+  });
+
+  // --- Motion toggle button logic ---
+  if (motionBtn) {
+    motionBtn.addEventListener('click', () => {
+      motionEnabled = !motionEnabled;
+      motionBtn.classList.toggle('active', motionEnabled);
+
+      if (motionEnabled) {
+        console.info('[Motion] enabled');
+        if (looping) {
+          viewer.currentTime = loopStart;
+          viewer.play();
+          if (!rafId) rafTick();
+        } else {
+          viewer.play();
+        }
+      } else {
+        console.info('[Motion] disabled');
+        viewer.pause();
+      }
+    });
+  }
+
+  window.__terminalDebug = { startLoop, clearLoop, actions };
+
+})();
+</script>
+<!-- === INTERACTIVE TERMINAL JS END === -->
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
